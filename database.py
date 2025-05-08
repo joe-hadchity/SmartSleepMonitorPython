@@ -68,3 +68,11 @@ class DatabaseManager:
             cls._instance = cls(mongodb_uri) #store the uri
         return cls._instance
         
+    def get_db():
+        """FastAPI dependency that returns the database instance"""
+        db_manager = DatabaseManager.get_instance(mongodb_uri="your_mongodb_uri")
+        db_manager.connect()
+        try:
+            yield db_manager.get_database()
+        finally:
+            db_manager.disconnect()
